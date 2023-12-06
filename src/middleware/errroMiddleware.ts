@@ -1,4 +1,5 @@
 import { Request, Response, NextFunction } from "express";
+import { STATUS_CODES } from "../util/statuscode";
 interface ErrorResponse {
   message: string;
   stack?: string | null;
@@ -20,7 +21,7 @@ export const errorHandler = async (
 
 export const notFoundMiddleware = (req: Request, res: Response) => {
   res
-    .status(404)
+    .status(STATUS_CODES.NOT_FOUND)
     .json({
       success: false,
       message: "Endpoint Not Found",
