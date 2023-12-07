@@ -14,6 +14,7 @@
   "author": "Yaqub Tawab Olamilekan",
   "license": "ISC",
   "dependencies": {
+    "@types/bcrypt": "^5.0.2",
     "@types/express-session": "^1.17.10",
     "@types/uuid": "^9.0.7",
     "bcrypt": "^5.1.1",

@@ -31,6 +31,7 @@ passport.use(
 
         if (user) {
           const token = generateToken(user.user_uuid);
+          console.log(token)
           done(null, { user, token });
         } else {
           done(new Error("Failed to create/find user."));
