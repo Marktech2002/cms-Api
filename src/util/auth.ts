@@ -1,5 +1,6 @@
 import { Strategy as GoogleStrategy, Profile } from "passport-google-oauth20";
 import passport from "passport";
+import Jwt from "jsonwebtoken";
 import "dotenv/config";
 import { User, UserModel } from "../models/userModel";
 import { logger } from "./logger";
@@ -23,13 +24,14 @@ passport.use(
           email: profile.emails![0].value,
         };
         let user = await UserModel.findOne({ googleId: profile.id });
-        console.log(profile)
+        console.log(profile);
         if (!user) {
           user = await UserModel.create(newUser);
         }
-        
+
         if (user) {
-          done(null, user);
+          const token = generateToken(user.user_uuid);
+          done(null, { user, token });
         } else {
           done(new Error("Failed to create/find user."));
         }
@@ -45,11 +47,16 @@ passport.serializeUser((user: User, done) => {
 });
 
 passport.deserializeUser(async (id: string, done) => {
-    try {
-      const user = await UserModel.findById(id).exec();
-      done(null, user);
-    } catch (error) {
-      done(error, null);
-    }
+  try {
+    const user = await UserModel.findById(id).exec();
+    done(null, user);
+  } catch (error) {
+    done(error, null);
+  }
+});
+
+const generateToken = (id: any): any => {
+  return Jwt.sign({ id }, process.env.JWT_SECRET, {
+    expiresIn: "30d",
   });
-  
+};

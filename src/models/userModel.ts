@@ -1,4 +1,5 @@
 import mongoose, { Schema, Document } from "mongoose";
+import { v4 as uuidv4 } from 'uuid';
 
 export interface User extends Document {
   user_uuid: String;
@@ -12,6 +13,7 @@ export interface User extends Document {
 const userSchema: Schema<User> = new Schema<User>({
   user_uuid: {
     type: String,
+    default: uuidv4, // Assigns a UUID v4 by default when a new user is created
     trim: true,
   },
   email: {
