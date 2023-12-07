@@ -27,11 +27,12 @@ export const protectUser = async (
       try {
         token = req.headers.authorization.split(" ")[1];
         const decoded: any = Jwt.verify(token, process.env.JWT_SECRET || "");
-        req.body.user_uuid = decoded.user_uuid;
-        next(); 
+        req.body.user = decoded;
+        //   console.log(req.body.user);
+        next();
       } catch (error) {
         logger.error(error);
-        return res.status(STATUS_CODES.NOT_FOUND).json({
+        return res.status(STATUS_CODES.INVALID).json({
           success: false,
           message: "Not authorized",
           status: "Invalid Request",
@@ -39,7 +40,7 @@ export const protectUser = async (
       }
       // ? mssing token
       if (!token) {
-        return res.status(STATUS_CODES.NOT_FOUND).json({
+        return res.status(STATUS_CODES.INVALID).json({
           success: false,
           message: "Not authorized , no token",
           status: "Invalid Request",

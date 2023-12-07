@@ -7,5 +7,4 @@ router.put("/edit/:id" , editPost);
 router.get("/all" , allPost );
 router.put("/delete/:id" , deleteAPost);
 
-
 export default router ;
